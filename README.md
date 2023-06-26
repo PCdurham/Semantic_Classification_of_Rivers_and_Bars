@@ -92,4 +92,4 @@ The final class raster for each MGRS zone will be saved as Class_S2_Month_Zone.t
 ![Screenshot](Example.png)
 
 ## Data Examples. 
-We provide a total of 85 MGRS zones as examples.  These cover the Americas, Africa, Europe, East Asia and North-West Russia.  Once unzipped, the tiles can be directly read in any GIS software. Classes are: 1: Rivers (light blue); 2: Lakes (green); 3: Sediment Bars (red); 4: Oceans (royal blue); 5: Glaciated Terrain (cyan); 6: Snow (light grey); 7: Clouds (dark grey); 8: Data Gaps (black)
+We provide a total of 33 full MGRS zones as examples.  These cover the Americas, Africa, Europe, East Asia and North-West Russia.  Once unzipped, the tiles can be directly read in any GIS software. Classes are: 1: Rivers (light blue); 2: Lakes (green); 3: Sediment Bars (red); 4: Oceans (royal blue); 5: Glaciated Terrain (cyan); 6: Snow (light grey); 7: Clouds (dark grey); 8: Data Gaps (black)
