@@ -75,6 +75,8 @@ The post-processing script begins by merging the multiple sub-images into a sing
  
 **Rivers_in_Lakes** is define on line 401 of the post-processing script.  This script uses a void fill algorithm to reclass any river object completely enclosed in a lake as lake.
 
+Before applying the final filters, all main road areas in the metadata raster are set to background (class 0) on line 524 of the post processing script.
+
 **Lake2Ocean** is defined on line 416 of the post-processing script. It's purpose is to correct lake slivers in contact with the ocean caused by the model often classifying coastal waters as lakes. This filter labels connected lake objects and re-classifies any lake object that intersects with a binary dilation of the ocean as ocean.
 
 **River2Ocean** is defined on line 442 of the post processing script.  Similar to the Lake2OCean filter, this filter seeks to eliminate river slivers that are in contact with the ocean.  Given that connected river objects extend inland, this filter uses a hard ocean buffer of 150 meters.  Within this buffer, any river pixel is reclassified to ocean. 
