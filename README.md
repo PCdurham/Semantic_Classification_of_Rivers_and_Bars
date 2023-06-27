@@ -87,7 +87,7 @@ Before applying the final filters, all main road areas in the metadata raster ar
 The CPU and GPU filters have a total of 13 threshold parameters with ranges of 0-100  that need to be optimised.  We used a Monte-Carlo type approach.  Rather that a brute force approach across the full 13 dimension parameter space, we started by manually estimating a parameter set that gave reasonable performance.  Then we randomly created 10 000 parameter combinations within a range of +/- 10% for each parameter.  The resulting final parameters are stored in a numpy array that can be read by the filters.
 
 ## Final Outputs
-The final class raster for each MGRS zone will be saved as Class_S2_Month_Zone.tif.  The data are highly compressed and are typically ~20 Mb for each MGRS gridzone comprising in excess of 4 Gigapixels.  Global coverage can be achieved in less than 10 Gb.  For each class raster, a color table is saved with the background set to transparent.  Below is an example from MGRS zone 53V with a Google Satellite base image.    
+The final class raster for each MGRS zone will be saved as Class_S2_Month_Zone.tif.  The data are highly compressed and are typically 20 to 50 Mb for each MGRS gridzone comprising in excess of 4 Gigapixels.  Global coverage can be achieved in less than 10 Gb.  For each class raster, a color table is saved with the background set to transparent.  Below is an example from MGRS zone 53V with a Google Satellite base image.    
 
 ![Screenshot](Example.png)
 
