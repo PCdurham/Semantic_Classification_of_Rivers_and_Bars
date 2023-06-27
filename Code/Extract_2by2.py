@@ -20,10 +20,6 @@ from cupyx.scipy.ndimage import label as cplabel
 pd.options.mode.chained_assignment = None
 import os
 import time
-#import skimage.io as io
-# import rasterio
-# from rasterio.windows import from_bounds
-# from rasterio.enums import Resampling
 from osgeo import gdal
 from scipy.ndimage import generate_binary_structure
 
@@ -75,7 +71,7 @@ ClassSheet=pd.read_csv(ResultsFile)
 
 for gzd in range(len(ClassSheet.Zone)):
     tic()
-    #outmask='/home/patrice/Documents/FastData/GolbalGrid/TempGridImage'+str(gzd)+'.tif'
+    
     ULUTMx=ClassSheet.UTMllx[gzd]
     ULUTMy=ClassSheet.UTMury[gzd]
     LRUTMx=ClassSheet.UTMurx[gzd] 
@@ -84,19 +80,11 @@ for gzd in range(len(ClassSheet.Zone)):
     UL4326y=ClassSheet.URy[gzd]
     LR4326x=ClassSheet.URx[gzd] 
     LR4326y=ClassSheet.LLy[gzd]
-    # ULmapx=ClassSheet.UTMllx[gzd]
-    # ULmapy=ClassSheet.UTMury[gzd]
-    # LRmapx=ClassSheet.UTMurx[gzd] 
-    # LRmapy=ClassSheet.UTMlly[gzd]
+
     thiscrs=GetCRS(ClassSheet.GZD[gzd], ClassSheet.Zone[gzd])
     MaskName=ClassPath+'Class_S2_'+Month+'_Z'+str(int(ClassSheet.Zone[gzd])).zfill(2)+str(ClassSheet.GZD[gzd])+'.tif'
     if os.path.isfile(MaskName):
-        #the the class raster subimage
-    # try:
-    #     with rasterio.open(MaskName) as src:
-    #         ClassRaster = src.read(1, window=from_bounds(ULUTMx, LRUTMy, LRUTMx, ULUTMy, src.transform))
-    #         #ClassRaster1 = src.read(1, window=from_bounds(ULmapx, LRmapy, LRmapx, ULmapy, src.transform))
-    # except:
+
         ds = gdal.Open(MaskName)
         ds = gdal.Translate('', ds, projWin = [ULUTMx, ULUTMy, LRUTMx, LRUTMy,], format='MEM')
         ClassRaster=ds.ReadAsArray()
