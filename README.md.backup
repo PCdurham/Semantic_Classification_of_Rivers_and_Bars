@@ -14,6 +14,8 @@
 - scikit-learn
 - scikit-image
 - fill_voids
+- cupy
+- QGIS as python package (in a seperate environment)
 - basics: PIL, pandas, numpy, scipy, os, shutil, glob, etc..
 
 ## Hardware requirements
@@ -87,9 +89,13 @@ Before applying the final filters, all main road areas in the metadata raster ar
 The CPU and GPU filters have a total of 13 threshold parameters with ranges of 0-100  that need to be optimised.  We used a Monte-Carlo type approach.  Rather that a brute force approach across the full 13 dimension parameter space, we started by manually estimating a parameter set that gave reasonable performance.  Then we randomly created 10 000 parameter combinations within a range of +/- 10% for each parameter.  The resulting final parameters are stored in a numpy array that can be read by the filters.
 
 ## Final Outputs
-The final class raster for each MGRS zone will be saved as Class_S2_Month_Zone.tif.  The data are highly compressed and are typically ~20 Mb for each MGRS gridzone comprising in excess of 4 Gigapixels.  Global coverage can be achieved in less than 10 Gb.  For each class raster, a color table is saved with the background set to transparent.  Below is an example from MGRS zone 53V with a Google Satellite base image.    
+The final class raster for each MGRS zone will be saved as Class_S2_Month_Zone.tif.  The data are highly compressed and are typically 20 to 50 Mb for each MGRS gridzone comprising in excess of 4 Gigapixels.  Global coverage can be achieved in less than 10 Gb.  For each class raster, a color table is saved with the background set to transparent.  Below is an example from MGRS zone 53V with a Google Satellite base image.    
 
 ![Screenshot](Example.png)
 
-## Data Examples. 
 We provide a sample of 33 full MGRS zones as examples (samples folder).  These are from the Americas, Africa, Europe, East Asia and North-West Russia.  Once downloaded, the tiles can be directly read in any GIS software. Classes are: 0: background (transparent) 1: Rivers (light blue); 2: Lakes (green); 3: Sediment Bars (red); 4: Oceans (royal blue); 5: Glaciated Terrain (cyan); 6: Snow (light grey); 7: Clouds (dark grey); 8: Data Gaps (black)
+
+## Analysis Scripts
+The data is analysed on the basis of 2x2 degree squares.  The anaysis script, Extract-2by2.py requires an input csv file with the name of the MGRS zone and the upper left and lower right corner of each 2x2 patch, in UTM coordinates.  It then uses this data to read the class raster in the correct location (with GDAL).  The script then sums the pixels in each class.  Next, the script performs a labelling of the connected bar class components in order to count the number of bars and get the median size of bar objects in the 2x2 degree patch. The Cupy library is used to perform this step on the GPU. The results are written back into the input csv file which is saved as an output.
+
+Finally, we use a PyQGIS script, Vectorise-2by2.py, to create a global vector of 2x2 degree squares.  The script creates an attributes table populated with River density, Bar density, Median bar area, etc...
