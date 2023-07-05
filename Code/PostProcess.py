@@ -397,30 +397,6 @@ def CleanBars(ClassRaster):
         ClassRaster=nbputmask(ClassRaster, newbars, 3)
     return ClassRaster
 
-def CleanRivers(ClassRaster, NetworkMask):
-    rivers=ClassRaster==1
-    if np.count_nonzero(rivers)>0:
-        
-        s = generate_binary_structure(2,2) #8-connectedness
-        riverlabel=sclabel(rivers, output='int32', structure=s)[0]
-        if np.amax(riverlabel)<32766:
-            print('int16 river labels')
-            riverlabel=np.int16(riverlabel)
-        del rivers
-        contactlabel=nbtimes(riverlabel.ravel(), NetworkMask.ravel())
-        riverlabel=riverlabel.ravel()
-        riverobjects=pd.unique(contactlabel)
-        #Mask=np.ones(ClassRaster.shape, dtype='bool').ravel()==0
-        Mask=isnot_in_set_pnb(riverlabel, riverobjects).reshape(ClassRaster.shape)
-        newrivers=nbputmask(riverlabel.reshape(ClassRaster.shape), Mask, 0)>0
-        del Mask
-        ClassRaster=nbputmask(ClassRaster, ClassRaster==1, 0)
-        ClassRaster=nbputmask(ClassRaster, newrivers, 1)
-    return ClassRaster
-
-
-
-
 
 def Rivers_in_Lakes(ClassRaster):
     # if river water is fully in lake water, make it lake water.     Rivers=ClassRaster==1
@@ -545,15 +521,7 @@ for f in range(1, len(folderlist)-int(skipLAST)):
             print('small water bodies')
             ClassRaster1=FixSmallWaterBody(ClassRaster1, clear10s=True)
             ClassRaster1=Rivers_in_Lakes(ClassRaster1)
-            print('setting road buffers to background')
-            roads=MetaMask==10
-            probableroads=nblogical_and(roads, ClassRaster1==1)
-            ClassRaster1=nbputmask(ClassRaster1,probableroads ,0)
-            del roads, probableroads
-            if np.count_nonzero(MetaMask==5)>0:
-                cond=MetaMask==5
-                ClassRaster1=nbputmask(ClassRaster1,cond ,5)  
-                del cond
+
                 
 
             #re-impose no data areas
