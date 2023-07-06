@@ -2,7 +2,7 @@
   
 
 
-## A global semantic classification method for rivers and sediment deposits based on deep learning and image processing of Sentinel 2 data 
+## A global semantic classification method for rivers and sediment deposits based on deep learning and image processing of Sentinel-2 data 
 
 
 
@@ -23,8 +23,8 @@
 
 ## Data download with Google Earth Engine
 
-The first step is to download Sentinel-2 imagery.  We use the Python API for Google Earth Engine (GEE) via Google Colaboratory. The data arrives in 4 bands: Band 8 (NIR), Band 4 (R) and Band 3 (G) have the main image data.  We add an additional band with a cloud mask as determined by the S2cloudless database from GEE.  We preserve the full 10 m spatial resolution but the radiometry is downsampled to a a range of 0-255 (8-bit) in order to reduce volume and facilitate global scale usage (on the order of 6Tb for global coverage).  Spatially, the data are organised as per the Military Grid Reference System (MGRS) which further divides each UTM zone of 6 degrees in longitude into squares of 8 (10 at the poles) degrees of latitude. Each image is converted to a UTM projected coordinate system which will preserve the size of each pixel (1 pixel is 10 meters wide at all latitudes). Image files are written to Google Drive in a seperate folder for each MGRS grid zone, GEE limits the size of any given image to ~2Gb.  Images for an entire MGRS range from 3-10 GB and therefore the GEE outputs is split into 3-12 image sub-tiles. 
 
+The first step is to download Sentinel-2 imagery.  We use Sentinel 2 data with L2A atmospheric correction via the Python API for Google Earth Engine (GEE) via Google Colaboratory. The data arrives in 4 bands: Band 8 (NIR), Band 4 (R) and Band 3 (G) have the main image data.  We add an additional band with a cloud mask as determined by the S2cloudless database from GEE.  We preserve the full 10 m spatial resolution but the radiometry is downsampled to a a range of 0-255 (8-bit) in order to reduce volume and facilitate global scale usage (on the order of 5Tb for global coverage).  Spatially, the data are organised as per the Military Grid Reference System (MGRS) which further divides each UTM zone of 6 degrees in longitude into squares of 8 (10 at the poles) degrees of latitude. Each image is converted to a UTM projected coordinate system which will preserve the size of each pixel (1 pixel is 10 meters wide at all latitudes). Image files are written to Google Drive in a seperate folder for each MGRS grid zone, GEE limits the size of any given image to ~2Gb.  Images for an entire MGRS range from 3-10 GB and therefore the GEE outputs is split into 3-12 image sub-tiles. Temproally, we choose to download images over a period of 1 month. Over this period, GEE will composite using the median value of available pixels. 
 
 
 The full Jupyter notebook is include in the code folder. This notebook uses a csv file to read map bounds for the desired MGRS zones. The resulting images are saved to Google Drive and must then be synced to a local directory.  
